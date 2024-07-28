@@ -1,3 +1,4 @@
+//middleware/authMiddleware.js
 import jwt from 'jsonwebtoken';
 import Admin from '../models/Admin.js'; // Ensure the path is correct
 

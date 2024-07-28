@@ -1,3 +1,4 @@
+//routes/bookRoutes.js
 import express from 'express';
 import { getBooks, addBook, deleteBook, getBooksByUser, issueBook } from '../controllers/bookController.js';
 import { auth, isAdmin } from '../middleware/authMiddleware.js';

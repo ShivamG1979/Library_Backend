@@ -11,6 +11,7 @@ export const getBooks = async (req, res) => {
     }
 };
 
+
 export const addBook = async (req, res) => {
     const { title, author, year, image } = req.body;
     if (!title || !author || !year || !image) {
