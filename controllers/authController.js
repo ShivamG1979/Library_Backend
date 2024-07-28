@@ -1,3 +1,4 @@
+//controllers/authController.js
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js'; // Import User model
@@ -54,11 +55,12 @@ export const login = async (req, res) => {
 // Profile function
 export const getProfile = async (req, res) => {
     try {
+        console.log('Getting Profile for User ID:', req.user.id); // Debugging
         if (!req.user || !req.user.id) {
             return res.status(400).json({ message: 'User ID not found' });
         }
 
-        const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        const user = await User.findById(req.user.id).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -72,7 +74,7 @@ export const getProfile = async (req, res) => {
 
 // Profile update function
 export const updateProfile = async (req, res) => {
-    const { username, email } = req.body;
+    const { username, email } = req.body; 
     try {
         const user = await User.findById(req.user.id);
         if (!user) {

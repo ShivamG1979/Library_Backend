@@ -1,6 +1,7 @@
 import express from 'express';
 import { getBooks, addBook, deleteBook, getBooksByUser, issueBook } from '../controllers/bookController.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+import { auth, isAdmin } from '../middleware/authMiddleware.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -8,15 +9,25 @@ const router = express.Router();
 router.get('/', getBooks);
 
 // Protected route to add a new book
-router.post('/', authMiddleware, addBook);
+router.post('/', auth, isAdmin, addBook); // Ensure only admin can add books
 
 // Protected route to delete a book
-router.delete('/:id', authMiddleware, deleteBook);
+router.delete('/:id', auth, isAdmin, deleteBook); // Ensure only admin can delete books
 
 // Protected route to get books by user
-router.get('/user', authMiddleware, getBooksByUser);
+router.get('/user', auth, getBooksByUser);
 
 // Protected route to issue a book
-router.put('/issue/:id', authMiddleware, issueBook);
+router.put('/issue/:id', auth, issueBook);
+
+// Admin route to get all users
+router.get('/admin/users', auth, isAdmin, async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
 export default router;
