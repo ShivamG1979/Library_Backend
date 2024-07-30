@@ -14,9 +14,12 @@ export const getBooks = async (req, res) => {
 
 export const addBook = async (req, res) => {
     const { title, author, year, image } = req.body;
+    const userId = req.user.id; // Ensure req.user.id is set
+
     if (!title || !author || !year || !image) {
         return res.status(400).json({ message: 'All fields are required' });
     }
+
     try {
         const newBook = new Book({
             title,
@@ -24,7 +27,7 @@ export const addBook = async (req, res) => {
             year,
             image,
             available: true,
-            user: req.user.id,
+            user: userId // Use the authenticated user's ID
         });
         await newBook.save();
         res.status(201).json(newBook);

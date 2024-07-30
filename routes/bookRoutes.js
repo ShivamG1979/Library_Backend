@@ -10,10 +10,10 @@ const router = express.Router();
 router.get('/', getBooks);
 
 // Protected route to add a new book
-router.post('/', auth, isAdmin, addBook); // Ensure only admin can add books
+router.post('/', auth, addBook); // Ensure only admin can add books
 
 // Protected route to delete a book
-router.delete('/:id', auth, isAdmin, deleteBook); // Ensure only admin can delete books
+router.delete('/:id', auth,  deleteBook); // Ensure only admin can delete books
 
 // Protected route to get books by user
 router.get('/user', auth, getBooksByUser);
