@@ -63,16 +63,19 @@ export const loginAdmin = async (req, res) => {
 // Get Admin Profile Handler
 export const getAdminProfile = async (req, res) => {
     try {
+        // Fetch the admin profile using the ID from the token
         const admin = await Admin.findById(req.user.id);
         if (!admin) {
             return res.status(404).json({ message: 'Admin not found' });
         }
-        res.json({ user: { username: admin.username, email: admin.email } });
+        // Include _id in the response
+        res.json({ user: { _id: admin._id, username: admin.username, email: admin.email } });
     } catch (error) {
         console.error('Error fetching admin profile:', error);
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
 
 // Update Admin Profile Handler
 export const updateAdminProfile = async (req, res) => {
@@ -144,9 +147,9 @@ export const deleteBook = async (req, res) => {
 // Issue Book Handler
 export const issueBook = async (req, res) => {
     try {
-        const { userId } = req.body; // Assuming userId is passed in the request body
+        const { userId } = req.body; // Ensure userId is passed in the request body
         const book = await Book.findById(req.params.id);
-        
+
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
@@ -162,14 +165,16 @@ export const issueBook = async (req, res) => {
         }
 
         book.available = false;
-        book.issuedTo = userId; // Assuming Book schema has an issuedTo field
+        book.issuedTo = userId;
         await book.save();
 
         res.status(200).json({ message: 'Book issued successfully' });
     } catch (error) {
+        console.error('Error issuing book:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 // Update Book Handler
 export const updateBook = async (req, res) => {
     try {

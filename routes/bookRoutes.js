@@ -19,7 +19,7 @@ router.delete('/:id', auth,  deleteBook); // Ensure only admin can delete books
 router.get('/user', auth, getBooksByUser);
 
 // Protected route to issue a book
-router.put('/issue/:id', auth, issueBook);
+router.put('/issue/:id', auth,isAdmin, issueBook);
 
 // Admin route to get all users
 router.get('/admin/users', auth, isAdmin, async (req, res) => {
